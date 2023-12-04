@@ -56,7 +56,7 @@ function loadGalleryImages(){
                         <td>
                             <div style="border: solid black thin; padding-bottom: 1%; margin-bottom: .5%;">
                                 <div style="display: flex; gap: 10px;" >
-                                    <img src="../profile.png" style="width: 15%; max-width: 50px">
+                                    <img src="../profile3.png" style="width: 15%; max-width: 50px">
                                     <p>Antonio</p>
                                 </div>
                                 <p>
@@ -65,7 +65,7 @@ function loadGalleryImages(){
                             </div>
                             <div style="border: solid black thin;">
                                 <div style="display: flex; gap: 10px;" >
-                                    <img src="../profile.png" style="width: 15%; max-width: 50px">
+                                    <img src="../profile3.png" style="width: 15%; max-width: 50px">
                                     <p>Antonio</p>
                                 </div>
                                 <p>
