@@ -1,6 +1,18 @@
+body{
+    font-size: 1.25rem;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
 #nav-title {
-    margin-left: 10px;
+    margin-left: 1%;
     /* margin-right: 20px; */
+}
+
+.nav-bar{
+    font-size: 1rem;
 }
 
 .nav-bar ul {
@@ -10,27 +22,17 @@
 
 .nav-bar li {
     display: inline;
+    font-size: 1.25rem;
 }
 
 .navigation-links {
     margin-top: 8px;
     font-weight: bold;
     display: inline;
-}
-
-.navigation-link {
     margin-right: 25px;
-    font-size: large;
 }
 
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a {
+body {
     font-family: "Segoe UI";
 }
 
@@ -40,8 +42,7 @@ a {
 }
 
 .nav-bar {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 1%;
     display: flex;
     background-color: #164863;
     justify-content: space-between;
@@ -49,44 +50,44 @@ a {
 
 .sub-nav {
     display: flex;
+    width: 30%;
 }
 
 #profile-nav {
+    justify-content: flex-end;
     padding-top: 5px;
     padding-right: 10px;
 }
 
-#profile-nav-text {
+#profile-name {
     color: white;
-    font-size: large;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 
 .content-area {
     display: flex;
+    justify-content:center;
+    margin-top:1%;
 }
 
 .content-area p {
-    font-size: larger;
+    font-size: 1rem;
     text-decoration: none;
     color: black;
+    text-align: justify;
 }
 
 .content-area a {
     font-style: italic;
-    font-size: large;
+    font-size: 1.2rem;
     text-decoration: none;
     font-weight: bold;
     color: #4E4FEB;
 }
 
 .content-area li {
-    font-size: large;
-    color: black;
-}
-
-.content-area span {
-    font-size: large;
+    font-size: 1rem;
     color: black;
 }
 
@@ -108,13 +109,13 @@ a {
     border-style: solid;
     border-width: 1px;
     border-color: black;
-    border-radius: 50px;
+    border-radius: 2rem;
 }
 
 .share-button-container {
     margin-left: 5px;
     text-decoration: none;
-    color: black !important;
+    color: black;
 }
 
 .image-footer-container {
@@ -127,3 +128,74 @@ a {
     border-radius: 10px;
     padding:5px;
 }
+
+#images-table-list{
+    width: 30%;
+}
+
+.comment-button{
+    background: transparent;
+    border: none;
+}
+
+.comment-submition{
+    width: 80%;
+}
+
+.about-image-container{
+    padding:1%;
+    width: 60%;
+}
+
+.about-image{
+    width: 100%;
+    max-width: 350px;
+}
+
+#about-text-container{
+    display:inline-block;
+     margin-left:15%;
+     margin-right:15%;
+}
+
+@media only screen and (max-width: 1024px) {
+    #images-table-list {
+        width: 100%;
+    }
+
+    .comment-submition{
+        width: 70%;
+    }
+
+    .content-area{
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        margin: 3%;
+        font-size: .75rem;
+        text-align: left;
+    }
+    
+    #about-text-container{
+        margin:0;
+    }
+
+    #profile-name{
+       display: none;
+    }
+
+    #profile-nav{
+        width: 10%;
+    }
+    
+    #links-nav{
+        width: 80%;
+    }
+
+    .navigation-links > a{
+        font-size: .8rem;
+    }   
+}
+
+ 
