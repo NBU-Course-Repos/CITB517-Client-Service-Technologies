@@ -1,18 +1,41 @@
-﻿using App.Persistence.Data;
+﻿using App.Controllers.Rest;
+using App.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
+    [Route("")]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        MediaRestController _mediaRestController;
+
+        public HomeController()
         {
-            return View();
+            _mediaRestController = new MediaRestController();
         }
 
-        public string Text(int age, string role = "admin")
+        [HttpGet]
+        public IActionResult Index()
         {
-            return $"Your age is {age} and your role is {role}";
+            var hostInfo = Request.Host;
+            var files = _mediaRestController.GetAll()
+                .Select(file => { 
+                    var mediaURL = $"{file.FilePath}";
+                    return new MediaViewModel
+                    {
+                        Caption = file.Caption,
+                        FilePath = mediaURL
+                    };
+                });
+
+            return View(files);
+        }
+
+        [HttpGet, Route("privacy")]
+        public IActionResult Privacy()
+        {
+            return View();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using App.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240119185224_UpdateDb4")]
+    partial class UpdateDb4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +35,6 @@ namespace App.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("MediaId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -44,8 +43,6 @@ namespace App.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CommentatorEmail");
-
-                    b.HasIndex("MediaId");
 
                     b.ToTable("Comments");
                 });
@@ -64,18 +61,16 @@ namespace App.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UploaderEmail")
+                    b.Property<string>("OwnerEmail")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("UploaderEmail");
+                    b.HasIndex("OwnerEmail");
 
                     b.ToTable("Medias");
                 });
@@ -102,29 +97,18 @@ namespace App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Persistence.Models.Media", "Media")
-                        .WithMany("Comments")
-                        .HasForeignKey("MediaId");
-
                     b.Navigation("Commentator");
-
-                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("App.Persistence.Models.Media", b =>
                 {
-                    b.HasOne("App.Persistence.Models.User", "Uploader")
+                    b.HasOne("App.Persistence.Models.User", "Owner")
                         .WithMany("Uploads")
-                        .HasForeignKey("UploaderEmail")
+                        .HasForeignKey("OwnerEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Uploader");
-                });
-
-            modelBuilder.Entity("App.Persistence.Models.Media", b =>
-                {
-                    b.Navigation("Comments");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("App.Persistence.Models.User", b =>

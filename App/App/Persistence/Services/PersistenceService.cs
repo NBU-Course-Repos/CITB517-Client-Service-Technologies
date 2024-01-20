@@ -2,33 +2,33 @@
 
 namespace App.Persistence.Services
 {
-    public abstract class PersistenceService<PM, K> : IPersistenceService
+    public abstract class PersistenceService <PM, ID> where PM : class
     {
-        protected AppDatabaseContext databaseContext = new AppDatabaseContext();
+        protected AppDatabaseContext databaseContext = new();
 
-        public PM? Create(PM entity)
-        {
+        public virtual PM? Create(PM entity)
+        {   
             var created = databaseContext.Add(entity);
             databaseContext.SaveChanges();
-            return (PM?)created.Entity;
+            return created.Entity;
         }
-        public PM? Delete(PM entity)
+
+        public virtual ISet<PM> GetAll() =>        
+             databaseContext.Set<PM>().ToHashSet();
+
+        public virtual void Delete(ID id)
         {
-            var deleted = databaseContext.Add(entity);
+            var entity = GetById(id);
+            if (entity != null) { 
+                databaseContext.Remove(entity);
+                databaseContext.SaveChanges();
+            }
+        }        
+
+        public virtual PM? GetById(ID id) =>
+            databaseContext.Find<PM>(id);
+        
+        public virtual void Update(PM entity) =>
             databaseContext.SaveChanges();
-            return (PM?)deleted.Entity;
-        }
-        public PM? Read(K id)
-        {
-            var persisted = databaseContext.Find(typeof(PM),id);
-            databaseContext.SaveChanges();
-            return (PM?)persisted;
-        }
-        public PM? Update(PM entity)
-        {
-            var updated = databaseContext.Update(entity);
-            databaseContext.SaveChanges();
-            return (PM?)updated.Entity;
-        }
     }
 }

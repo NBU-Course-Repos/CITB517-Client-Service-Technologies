@@ -3,6 +3,7 @@ using System;
 using App.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240118220112_UpdateDb2")]
+    partial class UpdateDb2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,14 +29,15 @@ namespace App.Migrations
 
                     b.Property<string>("CommentatorEmail")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CommentatorEmailAddress")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("MediaId")
-                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("Timestamp")
                         .IsConcurrencyToken()
@@ -43,9 +46,7 @@ namespace App.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentatorEmail");
-
-                    b.HasIndex("MediaId");
+                    b.HasIndex("CommentatorEmailAddress");
 
                     b.ToTable("Comments");
                 });
@@ -64,32 +65,30 @@ namespace App.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UploaderEmail")
+                    b.Property<string>("OwnerEmailAddress")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("UploaderEmail");
+                    b.HasIndex("OwnerEmailAddress");
 
                     b.ToTable("Medias");
                 });
 
             modelBuilder.Entity("App.Persistence.Models.User", b =>
                 {
-                    b.Property<string>("Email")
+                    b.Property<string>("EmailAddress")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Email");
+                    b.HasKey("EmailAddress");
 
                     b.ToTable("Users");
                 });
@@ -98,33 +97,22 @@ namespace App.Migrations
                 {
                     b.HasOne("App.Persistence.Models.User", "Commentator")
                         .WithMany("Comments")
-                        .HasForeignKey("CommentatorEmail")
+                        .HasForeignKey("CommentatorEmailAddress")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("App.Persistence.Models.Media", "Media")
-                        .WithMany("Comments")
-                        .HasForeignKey("MediaId");
 
                     b.Navigation("Commentator");
-
-                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("App.Persistence.Models.Media", b =>
                 {
-                    b.HasOne("App.Persistence.Models.User", "Uploader")
+                    b.HasOne("App.Persistence.Models.User", "Owner")
                         .WithMany("Uploads")
-                        .HasForeignKey("UploaderEmail")
+                        .HasForeignKey("OwnerEmailAddress")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Uploader");
-                });
-
-            modelBuilder.Entity("App.Persistence.Models.Media", b =>
-                {
-                    b.Navigation("Comments");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("App.Persistence.Models.User", b =>
