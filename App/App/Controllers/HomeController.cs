@@ -18,11 +18,5 @@ namespace App.Controllers
         {
             return View();
         }
-
-        [HttpGet, Route("privacy")]
-        public IActionResult Privacy()
-        {
-            return View();
-        }
     }
 }

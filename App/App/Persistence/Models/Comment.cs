@@ -10,7 +10,8 @@ namespace App.Persistence.Models
         [Column(TypeName="text")] public string Content { get; set; }
         public virtual User Commentator { get; set; }
         public string CommentatorEmail { get; set; }
-        public Media? Media { get; set; } 
+        public Media? Media { get; set; }
         public Guid? MediaId { get; set; }
+
     }
 }
