@@ -16,7 +16,18 @@ namespace App.Controllers.Rest
         }
 
         [HttpPost]
-        public CommentViewModel? Create([FromBody] CreateCommentRequest request) => service.Create(request);
+        public IActionResult Create([FromBody] CreateCommentRequest request)
+        {
+            try
+            {
+                var comment = service.Create(request);
+                return Ok(comment);
+            }
+            catch (Exception e)
+            {
+                 return StatusCode(403);
+            }
+        }
 
         [HttpGet, Route("all/commentator/{commentatorEmail}")]
         public ICollection<CommentViewModel> GetAllByUser(String commentatorEmail) => service.GetAllBy(commentatorEmail);
