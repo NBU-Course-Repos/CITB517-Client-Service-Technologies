@@ -1,6 +1,5 @@
 ﻿using App.Models;
 using App.Persistence.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace App.Persistence.Services
 {
@@ -15,14 +14,21 @@ namespace App.Persistence.Services
             databaseContext.Comments
             .Where(comment => comment.Commentator.Email == commentatorEmail)
             .OrderBy(comment => comment.Timestamp);
-        
+
+        private IEnumerable<Comment> FindAllBy(Guid mediaId) =>
+            databaseContext.Comments
+            .Where(comment => comment.MediaId == mediaId)
+            .OrderBy(comment => comment.Timestamp);
+
         public List<CommentViewModel> GetAllBy(string commentatorEmail) =>
             FindAllBy(commentatorEmail)
-            .Select<Comment, CommentViewModel>(comment => persistenceModelToDTO(comment))
+            .Select(comment => persistenceModelToDTO(comment))
             .ToList();
 
-        //public void DeleteAllBy(String commentatorEmail) => FindAllBy(commentatorEmail)
-        //    .(comment => databaseContext.Comments.Remove(comment));
+        public List<CommentViewModel> GetAllBy(Guid mediaId) =>
+            FindAllBy(mediaId)
+            .Select(comment => persistenceModelToDTO(comment))
+            .ToList();
 
         public CommentViewModel? Create(CreateCommentRequest request) {
             if (userService.GetById(request.CommentatorEmail) == null) throw new Exception("Invalid user");
@@ -30,6 +36,7 @@ namespace App.Persistence.Services
                 Id = Guid.NewGuid(), 
                 Timestamp = DateTime.Now, 
                 Content = request.Content,
+                MediaId = request.MediaId,
                 CommentatorEmail = request.CommentatorEmail }
             );
             return persistenceModelToDTO(comment);
@@ -48,7 +55,8 @@ namespace App.Persistence.Services
             Id = comment.Id,
             Content = comment.Content,
             CommentatorEmail = comment.CommentatorEmail,
-            Timestamp = comment.Timestamp
+            Timestamp = comment.Timestamp,
+            MediaId = comment.MediaId
         };
     }
 
@@ -56,6 +64,7 @@ namespace App.Persistence.Services
     {
         public String Content { get; set; }
         public String CommentatorEmail { get; set; }
+        public Guid MediaId { get; set; }
     }
 
     public class UpdateCommentRequest

@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$.get("/rest/api/user/all", function (result) {
 
-// Write your JavaScript code.
+    let assume_role_selection = document.getElementById("assume-role-selection");
+    for (let i = 0; i != result.length; i++) {
+        assume_role_selection.innerHTML +=
+            `<option value=${result[i].email}>${result[i].email}</option>`
+    }
+});

@@ -18,8 +18,11 @@ namespace App.Controllers.Rest
         [HttpPost]
         public CommentViewModel? Create([FromBody] CreateCommentRequest request) => service.Create(request);
 
-        [HttpGet, Route("all/{commentatorEmail}")]
-        public ICollection<CommentViewModel> GetAllBy(String commentatorEmail) => service.GetAllBy(commentatorEmail);
+        [HttpGet, Route("all/commentator/{commentatorEmail}")]
+        public ICollection<CommentViewModel> GetAllByUser(String commentatorEmail) => service.GetAllBy(commentatorEmail);
+
+        [HttpGet, Route("all/media/{mediaId}")]
+        public ICollection<CommentViewModel> GetAllByMedia(String mediaId) => service.GetAllBy(Guid.Parse(mediaId));
 
         [HttpGet, Route("all")]
         public ICollection<Comment> GetAll() => service.GetAll();
